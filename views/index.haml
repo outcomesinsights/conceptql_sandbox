@@ -1,0 +1,19 @@
+%html{ 'ng-app' => 'myApp' }
+  %head
+    %script{ :type => 'text/javascript', :src => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' }
+    %script{ :type => 'text/javascript', :src => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js' }
+    %script{ :type => 'text/javascript', :src => 'app.js' }
+  %body{ 'ng-controller' => 'MyCtrl as myCtrl' }
+    %h1 ConceptQL Sandbox
+    .sandbox
+      .statement
+        %form
+          %textarea{ 'ng-model' => 'statement', :rows => 15, :cols => 80 }
+          %button{ 'ng-click' => 'tryIt()' } Try It!
+      #query
+        %textarea{ 'ng-model' => 'query', :rows => 25, :cols => 80 }
+      #diagram
+        %img{ 'ng-src' => '{{img_src}}'  }
+    %ul
+      - @statements.each do |statement|
+        %li{ 'ng-click' => 'loadStatement("' + statement.to_s + '")'}= statement
