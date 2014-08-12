@@ -29,21 +29,25 @@ get '/statements.json' do
   { statement: hash }.to_json
 end
 
-post '/statement' do
-  statement = JSON.parse request.body.read
-  sql = ""
-  begin
-    sql = ConceptQL::Query.new(db, statement).query.sql
+get '/api/v0/sql' do
+  statement = JSON.parse(params[:conceptql])
+  sql = begin
+    ConceptQL::Query.new(db, statement).query.sql
   rescue LoadError
-    sql = "One of the nodes in your statement appears to be experimental.  Cannot generate SQL statement."
+    "One of the nodes in your statement appears to be experimental.  Cannot generate SQL statement."
   end
+  { sql: sql }.to_json
+end
+
+get '/api/v0/diagram' do
+  statement = JSON.parse(params[:conceptql])
   digest = Digest::SHA256.hexdigest statement.to_s
   output_file = Pathname.new('public') + digest
   graph_it(statement, output_file.to_s)
-  {
-    status: 'success',
-    query: sql,
-    yaml: statement.to_yaml,
-    img_src: "#{digest}.png"
-  }.to_json
+  { img_src: "#{digest}.png" }.to_json
+end
+
+get '/to_yaml' do
+  statement = JSON.parse(params[:conceptql])
+  { yaml: statement.to_yaml }.to_json
 end

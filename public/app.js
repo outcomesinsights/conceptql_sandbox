@@ -12,41 +12,43 @@ app.controller('MyCtrl', function($scope, $http) {
       $scope.tryIt();
     })
   }
-  $scope.tryIt = function () {
-    var statement = angular.fromJson($scope.statement)
+
+  var loadSQL = function(statement) {
     var displayIt = function(formatted_data) {
-      console.log(formatted_data);
       $scope.query = formatted_data.result;
-      console.log($scope.query);
-    }
-    console.log(statement)
-    $scope.statement = angular.toJson(statement, true)
-    $http.post('statement', statement).success(function(data) {
-      //$http.post('http://sqlformat.org/api/v1/format', { sql: data.query })
-      /*
-      $http.post('http://sqlformat.org/api/v1/format', { reindent: 1, sql: 'SELECT * FROM table;' }, { responseType: 'json' })
-                .success(displayIt)
-                .error(displayIt);
-                */
-      $scope.img_src = data.img_src
-      $scope.yaml = data.yaml;
+    };
+
+    $http.get('/api/v0/sql', { params: { conceptql: statement } }).success(function(data) {
       $http( { url: 'http://sqlformat.org/api/v1/format',
             method: 'POST',
             responseType: 'JSON',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            data: $.param({ reindent: 1, sql: data.query })})
+            data: $.param({ reindent: 1, sql: data.sql })})
                 .success(displayIt)
                 .error(displayIt);
-      /*
-      jQuery.ajax({
-        url: 'http://sqlformat.org/api/v1/format',
-        type: 'POST',
-        dataType: 'json',
-        crossDomain: true,
-        data: {sql: data.query, reindent: 1},
-        success: displayIt,
-      });
-      */
     });
+  };
+
+  var loadYAML = function(statement) {
+    $http.get('/to_yaml', { params: { conceptql: statement } }).success(function(data) {
+      $scope.yaml = data.yaml;
+    });
+  };
+
+  var loadDiagram = function(statement) {
+    console.group("dia")
+    console.log(statement)
+    console.groupEnd('dia')
+    $http.get('/api/v0/diagram', { params: { conceptql: statement } }).success(function(data) {
+      $scope.img_src = data.img_src;
+    });
+  };
+
+  $scope.tryIt = function () {
+    var statement = angular.fromJson($scope.statement)
+    loadSQL($.extend(true, {}, statement));
+    loadYAML($.extend(true, {}, statement));
+    loadDiagram($.extend(true, {}, statement));
+    $scope.statement = angular.toJson(statement, true)
   };
 });
