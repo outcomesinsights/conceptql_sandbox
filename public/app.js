@@ -29,6 +29,7 @@ app.controller('MyCtrl', function($scope, $http) {
                 .error(displayIt);
                 */
       $scope.img_src = data.img_src
+      $scope.yaml = data.yaml;
       $http( { url: 'http://sqlformat.org/api/v1/format',
             method: 'POST',
             responseType: 'JSON',

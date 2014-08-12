@@ -43,6 +43,7 @@ post '/statement' do
   {
     status: 'success',
     query: sql,
+    yaml: statement.to_yaml,
     img_src: "#{digest}.png"
   }.to_json
 end

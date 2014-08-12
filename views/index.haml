@@ -43,6 +43,11 @@
         .panel-heading
           %h4 Response
         .panel-body
+          .panel.panel-default.pull-left{ 'ng-show' => 'yaml' }
+            .panel-heading
+              %h4 YAML Representation
+            .panel-body
+              %textarea{ 'ng-model' => 'yaml', :rows => 25, :cols => 60 }
           .panel.panel-default.pull-left{ 'ng-show' => 'query' }
             .panel-heading
               %h4 PostgreSQL, OMOP-CDM compatible query
