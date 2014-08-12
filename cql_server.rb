@@ -20,13 +20,18 @@ end
 
 post '/statement' do
   statement = JSON.parse request.body.read
-  cq = ConceptQL::Query.new(db, statement)
+  sql = ""
+  begin
+    sql = ConceptQL::Query.new(db, statement).query.sql
+  rescue LoadError
+    sql = "One of the nodes in your statement appears to be experimental.  Cannot generate SQL statement."
+  end
   digest = Digest::SHA256.hexdigest statement.to_s
   output_file = Pathname.new('public') + digest
   graph_it(statement, output_file.to_s)
   {
     status: 'success',
-    query: cq.query.sql,
+    query: sql,
     img_src: "#{digest}.png"
   }.to_json
 end
