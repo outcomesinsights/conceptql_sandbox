@@ -2,5 +2,5 @@ require 'rubygems'
 require 'bundler'
 Bundler.require
 
-require './cql_server.rb'
+require './conceptql_sandbox.rb'
 run Sinatra::Application
