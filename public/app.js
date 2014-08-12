@@ -1,15 +1,17 @@
 var app = angular.module('myApp', []);
 
 app.controller('MyCtrl', function($scope, $http) {
-  $scope.statement = '{ "union": [ { "icd9": "412" }, { "cpt": "99214" } ] }';
-  $scope.loadStatement = function(statement) {
-    $http.get('/' + statement + '.json').success(function(data) {
-      console.log(data)
-      $scope.statement = data.statement
+  $scope.loadStatement = function() {
+    console.log($scope.statementPath);
+    if(!$scope.statementPath || $scope.statementPath == "") {
+      return;
+    }
+    $http.get('/statements.json', { params: { path: $scope.statementPath } }).success(function(data) {
+      console.log(data);
+      $scope.statement = data.statement;
       $scope.tryIt();
     })
   }
-  $scope.query = "Query will appear here";
   $scope.tryIt = function () {
     var statement = angular.fromJson($scope.statement)
     var displayIt = function(formatted_data) {

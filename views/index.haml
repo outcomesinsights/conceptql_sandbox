@@ -3,17 +3,34 @@
     %script{ :type => 'text/javascript', :src => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' }
     %script{ :type => 'text/javascript', :src => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js' }
     %script{ :type => 'text/javascript', :src => 'app.js' }
+    :css
+      .left {
+        float: left;
+      }
   %body{ 'ng-controller' => 'MyCtrl as myCtrl' }
     %h1 ConceptQL Sandbox
+    %p This webpage allows you to tinker with the <a href="http://github.com/outcomesinsights/conceptql">ConceptQL</a> language.  The language itself is descriped in <a href="https://github.com/outcomesinsights/conceptql/blob/master/doc/ConceptQL%20Specification%20(alpha).pdf?raw=true">this PDF</a>.
+    %p Enter in your ConceptQL statement in JSON format and click "Submit".  The statement is submitted to a webservice that will translate the statement into OMOP-CDM compatible SQL designed to run against a PostgreSQL database created through the <a href="http://github.com/outcomesinsights/loadmop">loadmop</a> tool.  It will also display a diagram of the statement.
+    %p You may also choose some example statments from the "Precanned statements" dropdown.  These examples demonstrate some of the features of ConceptQL.
+    %p Some features of the language are experimental and are not yet part of the SQL generator.  You might see a diagram, but no SQL if you run a statement that contains these experimental features.
+
+    .statemens
+      %label{ :for => 'precanned' } Pre-canned Statements
+      %select{ :name => 'precanned', 'ng-change' => 'loadStatement()', 'ng-model' => 'statementPath' }
+        %option{ :value => '' }
+        - @statements.each do |dir, statements|
+          - statements.each do |path, description|
+            %option{ :value => path }= description
     .sandbox
       .statement
+        %h4 ConceptQL Statement
         %form
-          %textarea{ 'ng-model' => 'statement', :rows => 15, :cols => 80 }
-          %button{ 'ng-click' => 'tryIt()' } Try It!
-      #query
-        %textarea{ 'ng-model' => 'query', :rows => 25, :cols => 80 }
-      #diagram
-        %img{ 'ng-src' => '{{img_src}}'  }
-    %ul
-      - @statements.each do |statement|
-        %li{ 'ng-click' => 'loadStatement("' + statement.to_s + '")'}= statement
+          %textarea{ 'ng-model' => 'statement', :rows => 15, :cols => 70 }
+          %br
+          %button{ 'ng-click' => 'tryIt()' } Submit Statement
+      #responses
+        #query.left
+          %h4 PostgreSQL, OMOP-CDM compatible query
+          %textarea{ 'ng-model' => 'query', :rows => 25, :cols => 70 }
+        #diagram.left
+          %img{ 'ng-src' => '{{img_src}}'  }

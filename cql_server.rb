@@ -10,12 +10,23 @@ end
 
 include Sequelizer
 get '/' do
-  @statements = Pathname.new('statements').children.map { |f| f.basename('.*').to_s }.reject { |f| f =~ /^\./ }
+  @statements = Pathname.new('statements').children.map do |dir|
+    next unless dir.directory? && !dir.children.empty?
+    files = dir.children.reject { |f| f.basename.to_s =~ /^\./ }.map do |f|
+      description = File.readlines(f).reject { |l| l !~ /^#/ }.map { |l| l.gsub('#', '').chomp.strip }.first
+      [f.to_s, description]
+    end
+    [dir.basename.to_s, files]
+  end.compact
+  @statements = Hash[@statements]
   haml :index
 end
 
-get '/:name' do
-  { statement: File.read('statements/' + params[:name]) }.to_json
+get '/statements.json' do
+  puts params
+  file_path = params[:path]
+  hash = eval(File.read(file_path))
+  { statement: hash }.to_json
 end
 
 post '/statement' do
