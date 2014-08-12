@@ -1,36 +1,55 @@
 %html{ 'ng-app' => 'myApp' }
   %head
-    %script{ :type => 'text/javascript', :src => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' }
-    %script{ :type => 'text/javascript', :src => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js' }
+    %link{ :href => '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css', :rel=>'stylesheet' }
+    %script{ :src => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' }
+    %script{ :src => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js' }
+    %script{ :src => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js' }
+    %script{ :src => '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js' }
     %script{ :type => 'text/javascript', :src => 'app.js' }
     :css
       .left {
         float: left;
       }
   %body{ 'ng-controller' => 'MyCtrl as myCtrl' }
-    %h1 ConceptQL Sandbox
-    %p This webpage allows you to tinker with the <a href="http://github.com/outcomesinsights/conceptql">ConceptQL</a> language.  The language itself is descriped in <a href="https://github.com/outcomesinsights/conceptql/blob/master/doc/ConceptQL%20Specification%20(alpha).pdf?raw=true">this PDF</a>.
-    %p Enter in your ConceptQL statement in JSON format and click "Submit".  The statement is submitted to a webservice that will translate the statement into OMOP-CDM compatible SQL designed to run against a PostgreSQL database created through the <a href="http://github.com/outcomesinsights/loadmop">loadmop</a> tool.  It will also display a diagram of the statement.
-    %p You may also choose some example statments from the "Precanned statements" dropdown.  These examples demonstrate some of the features of ConceptQL.
-    %p Some features of the language are experimental and are not yet part of the SQL generator.  You might see a diagram, but no SQL if you run a statement that contains these experimental features.
+    .row
+      .panel.panel-default.col-md-12
+        .panel-heading
+          %h1 ConceptQL Sandbox
+        .panel-body
+          %p This webpage allows you to tinker with the <a href="http://github.com/outcomesinsights/conceptql">ConceptQL</a> language.  The language itself is descriped in <a href="https://github.com/outcomesinsights/conceptql/blob/master/doc/ConceptQL%20Specification%20(alpha).pdf?raw=true">this PDF</a>.
+          %p Enter in your ConceptQL statement in JSON format and click "Submit".  The statement is submitted to a webservice that will translate the statement into OMOP-CDM compatible SQL designed to run against a PostgreSQL database created through the <a href="http://github.com/outcomesinsights/loadmop">loadmop</a> tool.  It will also display a diagram of the statement.
+          %p You may also choose some example statments from the "Precanned statements" dropdown.  These examples demonstrate some of the features of ConceptQL.
+          %p Some features of the language are experimental and are not yet part of the SQL generator.  You might see a diagram, but no SQL if you run a statement that contains these experimental features.
 
-    .statemens
-      %label{ :for => 'precanned' } Pre-canned Statements
-      %select{ :name => 'precanned', 'ng-change' => 'loadStatement()', 'ng-model' => 'statementPath' }
-        %option{ :value => '' }
-        - @statements.each do |dir, statements|
-          - statements.each do |path, description|
-            %option{ :value => path }= description
-    .sandbox
-      .statement
-        %h4 ConceptQL Statement
-        %form
-          %textarea{ 'ng-model' => 'statement', :rows => 15, :cols => 70 }
+    .row
+      .panel.panel-default.col-md-12
+        .panel-heading
+          %h4 ConceptQL Statement
+        .panel-body
+          %label{ :for => 'precanned' } Pre-canned Statements
           %br
+          %select{ :name => 'precanned', 'ng-change' => 'loadStatement()', 'ng-model' => 'statementPath' }
+            %option{ :value => '' }
+            - @statements.each do |dir, statements|
+              - statements.each do |path, description|
+                %option{ :value => path }= description
+          %form
+            %textarea{ 'ng-model' => 'statement', :rows => 15, :cols => 70 }
+            %br
+        .panel-footer
           %button{ 'ng-click' => 'tryIt()' } Submit Statement
-      #responses
-        #query.left
-          %h4 PostgreSQL, OMOP-CDM compatible query
-          %textarea{ 'ng-model' => 'query', :rows => 25, :cols => 70 }
-        #diagram.left
-          %img{ 'ng-src' => '{{img_src}}'  }
+    .row
+      .panel.panel-default.col-md-12{ 'ng-show' => 'query || img_src'}
+        .panel-heading
+          %h4 Response
+        .panel-body
+          .panel.panel-default.pull-left{ 'ng-show' => 'query' }
+            .panel-heading
+              %h4 PostgreSQL, OMOP-CDM compatible query
+            .panel-body
+              %textarea{ 'ng-model' => 'query', :rows => 25, :cols => 70 }
+          .panel.panel-default.pull-left{ 'ng-show' => 'img_src'}
+            .panel-heading
+              %h4 Diagram
+            .panel-body
+              %img{ 'ng-src' => '{{img_src}}'  }
