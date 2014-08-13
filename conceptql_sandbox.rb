@@ -8,6 +8,18 @@ def graph_it(statement, file)
   ConceptQL::FakeGrapher.new(suffix: 'png').graph_it(statement, file)
 end
 
+def dejson(str)
+  parsed = JSON.parse(str)
+  # We've got a problem where JavaScripts JSON.stringify seems to turn an array
+  # into a hash with keys of "0", "1", etc
+  # I want a real array, so we'll test for this situation and return an array
+  # if we find it
+  if parsed.respond_to?(:keys) && parsed.keys.all? { |k| k =~ /^\d+$/ }
+    parsed = parsed.keys.map(&:to_i).sort.map { |k| parsed[k.to_s] }
+  end
+  parsed
+end
+
 include Sequelizer
 get '/' do
   @statements = Pathname.new('statements').children.map do |dir|
@@ -30,7 +42,7 @@ get '/statements.json' do
 end
 
 get '/api/v0/sql' do
-  statement = JSON.parse(params[:conceptql])
+  statement = dejson(params[:conceptql])
   sql = begin
     ConceptQL::Query.new(db, statement).query.sql
   rescue LoadError
@@ -40,7 +52,7 @@ get '/api/v0/sql' do
 end
 
 get '/api/v0/diagram' do
-  statement = JSON.parse(params[:conceptql])
+  statement = dejson(params[:conceptql])
   digest = Digest::SHA256.hexdigest statement.to_s
   output_file = Pathname.new('public') + digest
   graph_it(statement, output_file.to_s)
@@ -48,6 +60,6 @@ get '/api/v0/diagram' do
 end
 
 get '/to_yaml' do
-  statement = JSON.parse(params[:conceptql])
+  statement = dejson(params[:conceptql])
   { yaml: statement.to_yaml }.to_json
 end
