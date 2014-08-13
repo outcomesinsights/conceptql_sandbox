@@ -14,6 +14,7 @@ app.controller('MyCtrl', function($scope, $http) {
   }
 
   var loadSQL = function(statement) {
+    $scope.query = null;
     var displayIt = function(formatted_data) {
       $scope.query = formatted_data.result;
     };
@@ -30,15 +31,14 @@ app.controller('MyCtrl', function($scope, $http) {
   };
 
   var loadYAML = function(statement) {
+    $scope.yaml = null;
     $http.get('/to_yaml', { params: { conceptql: statement } }).success(function(data) {
       $scope.yaml = data.yaml;
     });
   };
 
   var loadDiagram = function(statement) {
-    console.group("dia")
-    console.log(statement)
-    console.groupEnd('dia')
+    $scope.img_src = null;
     $http.get('/api/v0/diagram', { params: { conceptql: statement } }).success(function(data) {
       $scope.img_src = data.img_src;
     });
