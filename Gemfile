@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'conceptql', '>= 0.0.3'
+gem 'conceptql', github: 'outcomesinsights/conceptql', branch: 'feature/variables'
 gem 'haml'
 gem 'sequelizer'
 gem 'sinatra'
