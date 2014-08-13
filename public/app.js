@@ -11,6 +11,10 @@ app.controller('MyCtrl', function($scope, $http) {
     })
   }
 
+  $scope.$watch('statementPath', function() {
+    $scope.loadStatement();
+  });
+
   var loadSQL = function(statement) {
     $scope.query = null;
     var displayIt = function(formatted_data) {
@@ -49,4 +53,19 @@ app.controller('MyCtrl', function($scope, $http) {
     loadDiagram($.extend(true, {}, statement));
     $scope.statement = angular.toJson(statement, true)
   };
+
+  preloadSomeExample = function() {
+    // Grabbed the idea for parsing a URL from:
+    // http://jsfiddle.net/PT5BG/4/
+    var parser, hashy;
+    parser = document.createElement('a');
+    parser.href = window.location;
+
+    var hashy;
+    if (hashy = parser.hash) {
+      $scope.statementPath = hashy.substr(1);
+    }
+  };
+
+  preloadSomeExample();
 });
