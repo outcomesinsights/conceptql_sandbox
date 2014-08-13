@@ -1,8 +1,8 @@
-# NQF 002 using Variables
+# NQF 002 - Final Version
 measurement_period = {
   date_range: {
-    start: '2000-01-01',
-    end: '2099-12-31'
+    start: '2011-01-01',
+    end: '2011-12-31'
   }
 }
 
@@ -92,7 +92,7 @@ meds_before_ambulatory_encounter = {
   {
     define: [
       'Initial Population',
-      initial_population
+      initial_population_2
     ]
   },
 
@@ -138,3 +138,4 @@ meds_before_ambulatory_encounter = {
     }
   }
 ]
+

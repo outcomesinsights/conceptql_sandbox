@@ -1,9 +1,9 @@
 # Defines a set of variables and assembles them into a statement
 
-some_meds = {
+heart_attack = {
   define: [
-    'some meds',
-    { rxnorm: %w(128123812 123182381 1283281) }
+    'heart attack',
+    { icd9: %w(412) }
   ]
 }
 
@@ -15,11 +15,11 @@ office_visits = {
 }
 
 [
-  some_meds,
+  heart_attack,
   office_visits,
   {
     after: {
-      left: { from: 'some meds' },
+      left: { from: 'heart attack' },
       right: { from: 'office visits' }
     }
   }
