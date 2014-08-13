@@ -31,9 +31,8 @@
           %br
           %select.examples{ :name => 'examples', 'ng-change' => 'loadStatement()', 'ng-model' => 'statementPath' }
             %option{ :value => '' }
-            - @statements.each do |dir, statements|
-              - statements.each do |path, description|
-                %option{ :value => path }= description
+            - @statements.each do |path, description|
+              %option{ :value => path }= description
           %form
             %label{ :for => 'statment' } Editable ConceptQL Statement in JSON Format
             %br
