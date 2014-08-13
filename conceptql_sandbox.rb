@@ -40,8 +40,8 @@ get '/statements.json' do
   { statement: hash }.to_json
 end
 
-get '/api/v0/sql' do
-  statement = dejson(params[:conceptql])
+post '/api/v0/sql' do
+  statement = dejson(request.body.read)
   sql = begin
     ConceptQL::Query.new(db, statement).sql
   rescue LoadError
@@ -50,15 +50,15 @@ get '/api/v0/sql' do
   { sql: sql }.to_json
 end
 
-get '/api/v0/diagram' do
-  statement = dejson(params[:conceptql])
+post '/api/v0/diagram' do
+  statement = dejson(request.body.read)
   digest = Digest::SHA256.hexdigest statement.to_s
   output_file = Pathname.new('public') + digest
   graph_it(statement, output_file.to_s)
   { img_src: "#{digest}.png" }.to_json
 end
 
-get '/to_yaml' do
-  statement = dejson(params[:conceptql])
+post '/to_yaml' do
+  statement = dejson(request.body.read)
   { yaml: statement.to_yaml }.to_json
 end

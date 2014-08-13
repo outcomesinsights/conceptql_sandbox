@@ -17,7 +17,7 @@ app.controller('MyCtrl', function($scope, $http) {
       $scope.query = formatted_data.result;
     };
 
-    $http.get('/api/v0/sql', { params: { conceptql: statement } }).success(function(data) {
+    $http.post('/api/v0/sql', statement).success(function(data) {
       $http( { url: 'http://sqlformat.org/api/v1/format',
             method: 'POST',
             responseType: 'JSON',
@@ -30,14 +30,14 @@ app.controller('MyCtrl', function($scope, $http) {
 
   var loadYAML = function(statement) {
     $scope.yaml = null;
-    $http.get('/to_yaml', { params: { conceptql: statement } }).success(function(data) {
+    $http.post('/to_yaml', statement).success(function(data) {
       $scope.yaml = data.yaml;
     });
   };
 
   var loadDiagram = function(statement) {
     $scope.img_src = null;
-    $http.get('/api/v0/diagram', { params: { conceptql: statement } }).success(function(data) {
+    $http.post('/api/v0/diagram', statement).success(function(data) {
       $scope.img_src = data.img_src;
     });
   };
