@@ -44,7 +44,7 @@ end
 get '/api/v0/sql' do
   statement = dejson(params[:conceptql])
   sql = begin
-    ConceptQL::Query.new(db, statement).query.sql
+    ConceptQL::Query.new(db, statement).sql
   rescue LoadError
     "One of the nodes in your statement appears to be experimental.  Cannot generate SQL statement."
   end
