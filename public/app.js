@@ -48,6 +48,7 @@ app.controller('MyCtrl', function($scope, $http) {
 
   $scope.tryIt = function () {
     var statement = angular.fromJson($scope.statement)
+    $scope.copied = false;
     loadSQL($.extend(true, {}, statement));
     loadYAML($.extend(true, {}, statement));
     loadDiagram($.extend(true, {}, statement));
