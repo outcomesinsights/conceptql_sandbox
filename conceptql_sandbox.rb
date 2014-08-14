@@ -46,6 +46,10 @@ post '/api/v0/sql' do
     ConceptQL::Query.new(db, statement).sql
   rescue LoadError
     "One of the nodes in your statement appears to be experimental.  Cannot generate SQL statement."
+  rescue
+    puts $!.message
+    puts $!.backtrace.join("\n")
+    "The statement you submitted generated an unexpected error.  Sorry.  Please try modifying your statement."
   end
   { sql: sql }.to_json
 end
