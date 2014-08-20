@@ -26,7 +26,7 @@ initial_population = {
         { start: '+2y', end: '+17y' }
       ]
     },
-    right: { from: 'Measurement Period'}
+    right: { recall: 'Measurement Period'}
   }
 }
 
@@ -37,7 +37,7 @@ ambulatory_encounters = {
         vsac: [ '2.16.840.1.113883.3.464.0001.231', :procedure_occurrence ]
       }
     },
-    right: { from: 'Initial Population' }
+    right: { recall: 'Initial Population' }
   }
 }
 
@@ -50,7 +50,7 @@ pharyngitis_medication = {
 
 pharyngitis_encounters = {
   intersect: [
-    { from: 'Ambulatory Encounters' },
+    { recall: 'Ambulatory Encounters' },
     {
       visit_occurrence: { vsac: [ '2.16.840.1.113883.3.464.0001.369', :condition_occurrence ] }
     }
@@ -60,10 +60,10 @@ pharyngitis_encounters = {
 
 pharyngitis_encounter_followed_by_pharyngitis_meds = {
   during: {
-    left: { from: 'Pharyngitis Encounters' },
+    left: { recall: 'Pharyngitis Encounters' },
     right: {
       time_window: [
-        { from: 'Pharyngitis Medication' },
+        { recall: 'Pharyngitis Medication' },
         { start: '-3d', end: 'start' }
       ]
     }
@@ -72,10 +72,10 @@ pharyngitis_encounter_followed_by_pharyngitis_meds = {
 
 meds_before_ambulatory_encounter = {
   during: {
-    left: { from: 'Ambulatory Encounters' },
+    left: { recall: 'Ambulatory Encounters' },
     right: {
       time_window: [
-        { from: 'Pharyngitis Medication' },
+        { recall: 'Pharyngitis Medication' },
         { start: '0', end: '30d' }
       ]
     }
@@ -133,8 +133,8 @@ meds_before_ambulatory_encounter = {
 
   {
     except: {
-      left: { from: 'Pharyngitis Encounter followed by Pharyngitis Meds' },
-      right: { from: 'Pharyngitis Meds before Ambulatory Encounter' }
+      left: { recall: 'Pharyngitis Encounter followed by Pharyngitis Meds' },
+      right: { recall: 'Pharyngitis Meds before Ambulatory Encounter' }
     }
   }
 ]
