@@ -44,6 +44,11 @@
         .panel-heading
           %h4 Response
         .panel-body
+          .panel.panel-default.pull-left{ 'ng-show' => 'img_src'}
+            .panel-heading
+              %h4 Diagram
+            .panel-body
+              %img{ 'ng-src' => '{{img_src}}'  }
           .panel.panel-default.pull-left{ 'ng-show' => 'yaml' }
             .panel-heading
               %h4 YAML Representation
@@ -55,8 +60,3 @@
             .panel-body
               %p.info{ 'ng-show' => 'copied' } NOTE: If you plan to use this query against your PostgreSQL OMOP-CDM data, please make sure you've set your search_path variable properly.
               %textarea{ 'ng-model' => 'query', 'ng-copy' => 'copied=true', :rows => 25, :cols => 70 }
-          .panel.panel-default.pull-left{ 'ng-show' => 'img_src'}
-            .panel-heading
-              %h4 Diagram
-            .panel-body
-              %img{ 'ng-src' => '{{img_src}}'  }
