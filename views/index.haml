@@ -29,16 +29,31 @@
         .panel-body
           %label{ :for => 'examples' } Example Statements
           %br
-          %select.examples{ :name => 'examples', 'ng-change' => 'loadStatement()', 'ng-model' => 'statementPath' }
+          %select.examples{ :name => 'examples', 'ng-change' => 'loadExample()', 'ng-model' => 'exampleHashId' }
             %option{ :value => '' }
-            - @statements.each do |path, description|
-              %option{ :value => path }= description
+            - @examples.each do |example|
+              %option{ :value => example.hash_id }= example.title
           %form
+            %label{ :for => 'title' } Title of Example
+            %br
+            %input{ :type => 'text', :size => 70, 'ng-model' => 'title', 'ng-change' => 'exampleUrl=null' }
+            %br
+
+            %label{ :for => 'description' } A Brief Description on What Example Does
+            %br
+            %textarea{ 'ng-model' => 'description', :rows => 4, :cols => 70, 'ng-change' => 'exampleUrl=null' }
+            %br
+
             %label{ :for => 'statment' } Editable ConceptQL Statement in JSON Format
             %br
-            %textarea{ 'ng-model' => 'statement', :rows => 15, :cols => 70 }
+            %textarea{ 'ng-model' => 'statement', :rows => 15, :cols => 70, 'ng-change' => 'exampleUrl=null' }
+
+            %div{ 'ng-show' => 'exampleUrl' }
+              %label{ :for => 'exampleUrl' } URL for Example
+              %br
+              %input{ :type => 'text', :size => 70, 'ng-model' => 'exampleUrl' }
         .panel-footer
-          %button{ 'ng-click' => 'tryIt()' } Submit Statement
+          %button{ 'ng-click' => 'createExample()' } Submit Statement
     .row
       .panel.panel-default.col-md-12{ 'ng-show' => 'query || img_src || yaml'}
         .panel-heading

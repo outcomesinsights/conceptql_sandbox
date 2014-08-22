@@ -5,6 +5,7 @@ gem 'haml'
 gem 'sequelizer'
 gem 'sinatra'
 gem 'ruby-graphviz'
+gem 'sqlite3'
 gem 'hashids'
 
 group :development do

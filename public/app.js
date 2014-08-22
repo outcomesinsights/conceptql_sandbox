@@ -1,27 +1,48 @@
 var app = angular.module('myApp', []);
 
 app.controller('MyCtrl', function($scope, $http) {
-  $scope.loadStatement = function() {
-    if(!$scope.statementPath || $scope.statementPath == "") {
-      return;
+  var loadExample = function(data) {
+    $scope.title = data.title;
+    $scope.description = data.description;
+    if (data.statement) {
+      $scope.statement = JSON.stringify(JSON.parse(data.statement), undefined, 2);
     }
-    $http.get('/statements.json', { params: { path: $scope.statementPath } }).success(function(data) {
-      $scope.statement = data.statement;
-      $scope.tryIt();
-    })
+    var hashId = data.hash_id;
+    if (hashId && hashId != "") {
+      loadSQL(hashId);
+      loadYAML(hashId);
+      loadDiagram(hashId);
+      $scope.exampleUrl = $scope.urlify(hashId)
+    }
+
+  };
+
+  $scope.clear = function() {
+    $scope.yaml = null;
+    $scope.query = null;
+    $scope.img_src = null;
+    $scope.title = null;
+    $scope.description = null;
+    $scope.statement = null;
+    $scope.exampleUrl = null;
   }
 
-  $scope.$watch('statementPath', function() {
-    $scope.loadStatement();
+  $scope.fetchExample = function() {
+    $scope.clear();
+    createOrFetchExample({hash_id: $scope.exampleHashId})
+  };
+
+  $scope.$watch('exampleHashId', function() {
+    $scope.fetchExample();
   });
 
-  var loadSQL = function(statement) {
+  var loadSQL = function(hashId) {
     $scope.query = null;
     var displayIt = function(formatted_data) {
       $scope.query = formatted_data.result;
     };
 
-    $http.post('/api/v0/sql', statement).success(function(data) {
+    $http.get('/api/v0/sql/' + hashId).success(function(data) {
       $http( { url: 'http://sqlformat.org/api/v1/format',
             method: 'POST',
             responseType: 'JSON',
@@ -32,27 +53,37 @@ app.controller('MyCtrl', function($scope, $http) {
     });
   };
 
-  var loadYAML = function(statement) {
+  var loadYAML = function(hashId) {
     $scope.yaml = null;
-    $http.post('/to_yaml', statement).success(function(data) {
+    $http.get('/api/v0/yaml/' + hashId).success(function(data) {
       $scope.yaml = data.yaml;
     });
   };
 
-  var loadDiagram = function(statement) {
+  var loadDiagram = function(hashId) {
     $scope.img_src = null;
-    $http.post('/api/v0/diagram', statement).success(function(data) {
+    // Set the timeout for 10 minutes
+    $http.get('/api/v0/diagram/' + hashId, { timeout: 600000 }).success(function(data) {
       $scope.img_src = data.img_src;
     });
   };
 
-  $scope.tryIt = function () {
+  var createOrFetchExample = function(attributes) {
+    $http.post('/api/v0/create_example', attributes)
+      .success(function(data) {
+        loadExample(data);
+      });
+  };
+
+  $scope.createExample = function () {
     var statement = angular.fromJson($scope.statement)
-    $scope.copied = false;
-    loadSQL($.extend(true, {}, statement));
-    loadYAML($.extend(true, {}, statement));
-    loadDiagram($.extend(true, {}, statement));
     $scope.statement = angular.toJson(statement, true)
+    $scope.copied = false;
+    createOrFetchExample({
+      title: $scope.title,
+      description: $scope.description,
+      statement: $scope.statement
+    });
   };
 
   preloadSomeExample = function() {
@@ -64,9 +95,18 @@ app.controller('MyCtrl', function($scope, $http) {
 
     var hashy;
     if (hashy = parser.hash) {
-      $scope.statementPath = hashy.substr(1);
+      $scope.exampleHashId = hashy.substr(1);
     }
   };
+
+  $scope.urlify = function(hashId) {
+    var parser;
+    parser = document.createElement('a');
+    parser.href = window.location;
+    parser.path = '/';
+    parser.hash = '#' + hashId;
+    return parser.href;
+  }
 
   preloadSomeExample();
 });

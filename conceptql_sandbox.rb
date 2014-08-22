@@ -1,12 +1,11 @@
-require 'conceptql/query'
-require 'conceptql/fake_grapher'
 require 'sequelizer'
-require 'digest'
 require 'json'
+require_relative 'example'
+require_relative 'hashable'
 
-def graph_it(statement, file)
-  ConceptQL::FakeGrapher.new(suffix: 'png').graph_it(statement, file)
-end
+
+include Sequelizer
+include Hashable
 
 def dejson(str)
   parsed = JSON.parse(str)
@@ -20,49 +19,42 @@ def dejson(str)
   parsed
 end
 
-include Sequelizer
+def get_example(hash_id)
+  Example.find(id: unhash_it(hash_id))
+end
+
 get '/' do
-  @statements = Pathname.new('statements').children.map do |dir|
-    next unless dir.directory? && !dir.children.empty?
-    dir.children.reject { |f| f.basename.to_s =~ /^\./ }.map do |f|
-      description = File.readlines(f).reject { |l| l !~ /^#/ }.map { |l| l.gsub('#', '').chomp.strip }.first
-      [f.to_s, description]
-    end
-  end.flatten(1).compact.sort_by(&:last)
-  @statements = Hash[@statements]
+  @examples = Example.order(:title).all
   haml :index
 end
 
-get '/statements.json' do
-  puts params
-  file_path = params[:path]
-  hash = eval(File.read(file_path))
-  { statement: hash }.to_json
-end
-
-post '/api/v0/sql' do
-  statement = dejson(request.body.read)
-  sql = begin
-    ConceptQL::Query.new(db, statement).sql
-  rescue LoadError
-    "One of the nodes in your statement appears to be experimental.  Cannot generate SQL statement."
-  rescue
-    puts $!.message
-    puts $!.backtrace.join("\n")
-    "The statement you submitted generated an unexpected error.  Sorry.  Please try modifying your statement."
+post '/api/v0/create_example' do
+  data = dejson(request.body.read)
+  example = nil
+  if hash_id = data.delete('hash_id')
+    example = get_example(hash_id)
   end
-  { sql: sql }.to_json
+  return {}.to_json if example.nil? && data.empty?
+  example ||= Example.find_or_create(data)
+  {
+    hash_id: example.hash_id,
+    title: example.title,
+    description: example.description,
+    statement: example.statement
+  }.to_json
 end
 
-post '/api/v0/diagram' do
-  statement = dejson(request.body.read)
-  digest = Digest::SHA256.hexdigest statement.to_s
-  output_file = Pathname.new('public') + digest
-  graph_it(statement, output_file.to_s)
-  { img_src: "#{digest}.png" }.to_json
+get '/api/v0/sql/:hash_id' do
+  example = get_example(params[:hash_id])
+  { sql: example.sql }.to_json
 end
 
-post '/to_yaml' do
-  statement = dejson(request.body.read)
-  { yaml: statement.to_yaml }.to_json
+get '/api/v0/diagram/:hash_id' do
+  example = get_example(params[:hash_id])
+  { img_src: example.image_path }.to_json
+end
+
+get '/api/v0/yaml/:hash_id' do
+  example = get_example(params[:hash_id])
+  { yaml: example.yaml_statement }.to_json
 end
