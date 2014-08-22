@@ -5,6 +5,7 @@ gem 'haml'
 gem 'sequelizer'
 gem 'sinatra'
 gem 'ruby-graphviz'
+gem 'hashids'
 
 group :development do
   gem 'rerun'
