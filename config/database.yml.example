@@ -1,0 +1,15 @@
+---
+# 'data' points to the PostgreSQL database where the data actually lives
+data:
+  adapter: postgres
+  database: conceptql_test
+  host: 172.28.128.3
+  schema: vocabulary,_validation1,public
+  username: vagrant
+  password: v
+# 'site_data' points to where the examples live
+site_data:
+  adapter: sqlite
+  database: db/site_data.db
+
+
