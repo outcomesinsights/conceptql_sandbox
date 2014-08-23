@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 0.0.3 - 2014-08-22
+## 0.0.3 - 2014-08-23
 
 ### Added
 - Support for ConceptQL 0.0.6.
