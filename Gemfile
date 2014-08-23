@@ -6,6 +6,7 @@ gem 'sequelizer'
 gem 'sinatra'
 gem 'ruby-graphviz'
 gem 'sqlite3'
+gem 'pg'
 gem 'hashids'
 
 group :development do
