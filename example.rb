@@ -45,7 +45,7 @@ class Example < Sequel::Model
     ConceptQL::Graph.new(statement,
                          dangler: true,
                          suffix: 'png',
-                         db: db
+                         db: data_db
                         ).graph_it(file)
   rescue LoadError
     ConceptQL::FakeGrapher.new(suffix: 'png').graph_it(statement, file)
