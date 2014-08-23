@@ -18,9 +18,10 @@
           %h1 ConceptQL Sandbox
         .panel-body
           %p This webpage allows you to tinker with the <a href="http://github.com/outcomesinsights/conceptql">ConceptQL</a> language.  The language itself is descriped in <a href="https://github.com/outcomesinsights/conceptql/blob/master/doc/ConceptQL%20Specification%20(alpha).pdf?raw=true">this PDF</a>.
-          %p Enter in your ConceptQL statement in JSON format and click "Submit Statement".  The statement is submitted to a web service that will translate the statement into OMOP-CDM compatible SQL designed to run against a PostgreSQL database created through the <a href="http://github.com/outcomesinsights/loadmop">loadmop</a> tool.  It will also display a diagram of the statement.
-          %p You may also choose some example statments from the "Example Statements" dropdown.  These examples demonstrate some of the features of ConceptQL.
-          %p Some features of the language are experimental and are not yet part of the SQL generator.  You might see a diagram, but no SQL if you run a statement that contains these experimental features.
+          %p You may choose some example statments from the "Example Statements" dropdown.  These examples demonstrate some of the features of ConceptQL.
+          %p To enter in your ConceptQL example, you may modify an existing example, or enter in your own example in JSON format and click "Create Example".  The statement is submitted to a web service that will translate the statement into OMOP-CDM compatible SQL designed to run against a PostgreSQL database created through the <a href="http://github.com/outcomesinsights/loadmop">loadmop</a> tool.  It will also display a diagram of the statement.
+          %p The diagram includes a count of all the results that match your statement, along with a count of the unique patients in those results.  This processing can take a bit of time on our server, and your diagram may take a few moments to appear.  Once a diagram is generated, it is cached so it will appear faster the next time you access it.
+          %p Some features of the language are experimental and are not yet part of the SQL generator.  You might see a diagram, but no SQL if you run a statement that contains these experimental features.  Counts won't appear on diagrams that are experimental.
 
     .row
       .panel.panel-default.col-md-12
@@ -53,7 +54,7 @@
               %br
               %input{ :type => 'text', :size => 70, 'ng-model' => 'exampleUrl' }
         .panel-footer
-          %button{ 'ng-click' => 'createExample()' } Submit Example
+          %button{ 'ng-click' => 'createExample()' } Create Example
     .row
       .panel.panel-default.col-md-12{ 'ng-show' => 'query || img_src || yaml'}
         .panel-heading
