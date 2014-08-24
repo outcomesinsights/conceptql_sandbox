@@ -17,6 +17,8 @@ class Example < Sequel::Model
 
   def sql
     ConceptQL::Query.new(data_db, parsed_statement).sql
+  rescue LoadError
+    "Statement includes experimental nodes.  Cannot generate SQL statement."
   end
 
   def image_path
