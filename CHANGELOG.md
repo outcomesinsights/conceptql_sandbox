@@ -8,16 +8,17 @@ All notable changes to this project will be documented in this file.
     - Includes putting counts on each edge of diagrams.
 - Title/Description to each example.
 - Shortened URLs for saved examples.
+- Script to convert statement files to Example instances.
+- Script to pre-generate diagrams for examples.
 
 ### Deprecated
 - Nothing.
 
 ### Removed
-- Nothing.
+- Dependency on Sequelizer.
 
 ### Fixed
 - Nothing.
-
 
 
 ## 0.0.2 - 2014-08-19
