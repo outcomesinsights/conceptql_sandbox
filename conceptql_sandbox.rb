@@ -1,10 +1,7 @@
-require 'sequelizer'
 require 'json'
 require_relative 'example'
 require_relative 'hashable'
 
-
-include Sequelizer
 include Hashable
 
 def dejson(str)

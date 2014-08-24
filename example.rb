@@ -2,7 +2,6 @@ require 'sequel'
 require 'digest'
 require 'psych'
 require 'json'
-require 'sequelizer'
 require 'conceptql/query'
 require 'conceptql/graph'
 require 'conceptql/fake_grapher'
@@ -10,7 +9,6 @@ require_relative 'hashable'
 
 Sequel::Model.db = Sequel.connect(Psych.load_file('config/database.yml')['site_data'])
 class Example < Sequel::Model
-  include Sequelizer
   include Hashable
 
   def hash_id
@@ -38,7 +36,7 @@ class Example < Sequel::Model
 
   private
   def data_db
-    @data_db ||= new_db(Psych.load_file('config/database.yml')['data'])
+    @data_db ||= Sequel.connect(Psych.load_file('config/database.yml')['data'])
   end
 
   def graph_it(statement, file)
