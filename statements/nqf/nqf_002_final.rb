@@ -49,7 +49,7 @@ ambulatory_encounters = {
 pharyngitis_medication = {
   intersect: [
     { vsac: [ '2.16.840.1.113883.3.464.0001.373', :drug_exposure ] },
-    { drug_type_concept_id: %w(38000175 38000176 38000177 38000179) }
+    { drug_type_concept: %w(38000175 38000176 38000177 38000179) }
   ]
 }
 
