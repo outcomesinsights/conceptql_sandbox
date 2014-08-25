@@ -22,7 +22,7 @@ class Example < Sequel::Model
   end
 
   def image_path
-    output_file = Pathname.new('public') + image_hash
+    output_file = Pathname.new('public') + file_hash
     file = Pathname.new(output_file.to_s + '.png')
     graph_it(parsed_statement, output_file.to_s) unless file.exist?
     file.basename.to_s
@@ -37,7 +37,7 @@ class Example < Sequel::Model
   end
 
   def partial_results
-    @partial_results ||= query.query.from_self.limit(10).all
+    @partial_results ||= read_or_create_results_file
   end
 
   private
@@ -59,11 +59,29 @@ class Example < Sequel::Model
     ConceptQL::FakeGrapher.new(suffix: 'png').graph_it(statement, file)
   end
 
-  def image_hash
-    @image_hash ||= Digest::SHA256.hexdigest([ statement, sql, database_config ].join)
+  def file_hash
+    @file_hash ||= Digest::SHA256.hexdigest([ statement, sql, database_config ].join)
   end
 
   def database_config
     Psych.load_file('config/database.yml')['data']
+  end
+
+  def read_or_create_results_file
+    results_dir = Pathname.new('results')
+    results_dir.mkdir unless results_dir.exist?
+
+    file_name = file_hash + '.json'
+    results_file = results_dir + file_name
+
+    return JSON.parse(results_file.read) if results_file.exist?
+
+    results = begin
+      query.query.from_self.limit(10).all
+    rescue LoadError
+      [ { error: 'Query contains experimental nodes.  Cannot fetch results.' } ]
+    end
+    File.write(results_file, results.to_json)
+    results
   end
 end
