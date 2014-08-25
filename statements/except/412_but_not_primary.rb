@@ -1,4 +1,4 @@
-# All Conditions that are MI unless they are primary diagnoses
+# Except: All Conditions that are Old MI unless they inpatient headers
 {
   except: {
     left: { icd9: '412' },

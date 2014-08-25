@@ -1,4 +1,9 @@
-# NQF 002 with SQL Output
+# Quality: NQF 002 as Executable Statement
+# There are several examples of this statement in the Sandbox.
+#
+# This example replaces the "vsac" nodes in other examples with cpt/icd9/etc codes from the value sets called for in the measure definition.  This allows us to generate an actual SQL statement.
+# This example also forgoes using variables to break the statement up into sub-concepts, yielding a large diagram and a complex SQL query.
+# Lastly, this example doesn't limit the measure period to a single year and instead defines the measure period to be any time a person was between 2 and 18 between the years 2000 through 2099.
 measurement_period = {
   date_range: {
     start: '2000-01-01',

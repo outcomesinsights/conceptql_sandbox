@@ -1,4 +1,4 @@
-# All Male patients who died
+# Person Filter: All Male patients who died
 {
   person_filter: {
     left: { gender: 'Male' },

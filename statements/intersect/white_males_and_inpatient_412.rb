@@ -1,4 +1,8 @@
-# Yields two streams: a stream of all Conditions where MI was Primary Diagnosis and a stream of all White, Male patients.
+# Intersect: Four streams become two streams
+# Intersect will take sets of like-types and collapse them into a single set
+# Yields two sets:
+# - Conditions where Old MI was reported in Inpatient Header
+# - All White, Male patients
 {
   intersect: [
     { icd9: '412' },

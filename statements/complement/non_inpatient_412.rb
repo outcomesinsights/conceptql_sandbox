@@ -1,4 +1,4 @@
-# All Conditions where the Condition isn't an MI as the Primary Diagnosis
+# Complement: All Conditions where the Condition isn't an Old MI AND in an Inpatient setting
 {
   complement: {
     union: [

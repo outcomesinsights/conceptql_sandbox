@@ -1,4 +1,9 @@
-# NQF 002
+# Quality: NQF 002 as One Large Statement
+# There are several examples of this statement in the Sandbox.
+#
+# This example uses the "vsac" node, which, in the future, will pull code sets from the VSAC and create a set of results from those codes.
+# This example also forgoes using variables to break the statement up into sub-concepts, yielding a large diagram and a complex SQL query.
+# Lastly, this example doesn't limit the measure period to a single year and instead defines the measure period to be any time a person was between 2 and 18 between the years 2000 through 2099.
 measurement_period = {
   date_range: {
     start: '2000-01-01',
@@ -11,7 +16,7 @@ initial_population = {
     left: {
       time_window: [
         { person: true },
-        { start: '+2y', end: '+17y' }
+        { start: '+2y', end: '+18y-1d' }
       ]
     },
     right: measurement_period

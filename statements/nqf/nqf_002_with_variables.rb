@@ -1,4 +1,9 @@
-# NQF 002 using Variables
+# Quality: NQF 002 using Variables and large Measurement Period
+# There are several examples of this statement in the Sandbox.
+#
+# This example uses the "vsac" node, which, in the future, will pull code sets from the VSAC and create a set of results from those codes.
+# This example uses variables to break up the statement into sub-concepts and reuse several sub-concepts through the statement.
+# Lastly, this example doesn't limit the measure period to a single year and instead defines the measure period to be any time a person was between 2 and 18 between the years 2000 through 2099.
 measurement_period = {
   date_range: {
     start: '2000-01-01',

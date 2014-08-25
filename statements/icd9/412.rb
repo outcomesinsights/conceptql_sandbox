@@ -1,4 +1,4 @@
-# All conditions matching Old MI
-# Tests matching a condition that is found in source_to_concept_map
+# ICD-9: All conditions matching Old MI
+# Returns a set of results representing all Old MIs in the dataset
 { icd9: '412' }
 

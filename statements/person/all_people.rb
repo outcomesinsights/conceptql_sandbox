@@ -1,2 +1,2 @@
-# All people
+# Person: All people
 { person: true }

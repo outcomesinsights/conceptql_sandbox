@@ -1,3 +1,4 @@
+# Union: Three streams become two
 # Two streams of the same type (condition_occurrence) joined into a single stream, then a different stream (visit_occurrence) flows concurrently
 {
   union: [

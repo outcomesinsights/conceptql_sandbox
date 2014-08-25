@@ -1,4 +1,5 @@
-# Yields two streams: a stream of all Conditions where the conditions isn't an MI and Primary Diagnosis and a stream of all non-office visit Procedures
+# Complement: Non-Office Visit Procedures and all Conditions that aren't Old MI reported in Inpatient Header
+# This demonstrates how complement operates on each stream type separately.
 {
   complement: {
     union: [

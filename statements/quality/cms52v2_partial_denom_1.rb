@@ -1,4 +1,7 @@
-#CMS52v2, Portion of Denominator 1 - Occurrence A and B of HIV Visit
+#Quality: CMS52v2, Portion of Denominator 1 - Occurrence A and B of HIV Visit
+#
+# This illustrates how to handle QDM's "specific occurrence" feature.
+# In this case, the "specific occurrence" is used to enforce a 90-day gap and so it is possible to just compare the set of occurrences against itself and find any pair that is more than 90 days apart.
 [
   {
     define: [

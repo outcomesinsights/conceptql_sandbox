@@ -1,26 +1,30 @@
+# Variables: Simple example of using variables
 # Defines a set of variables and assembles them into a statement
+# In this case, we store all conditions representing Old MI in "Old MI"
+# then store all procedures representing office visits as "Office Visits"
+# and lastly find all "Old MIs" that occur after "Office Visits"
 
-heart_attack = {
+old_mi = {
   define: [
-    'heart attack',
+    'Old MI',
     { icd9: %w(412) }
   ]
 }
 
 office_visits = {
   define: [
-    'office visits',
+    'Office Visits',
     { cpt: %w(99211 99212 99213 99214 99215) }
   ]
 }
 
 [
-  heart_attack,
+  old_mi,
   office_visits,
   {
     after: {
-      left: { recall: 'heart attack' },
-      right: { recall: 'office visits' }
+      left: { recall: 'Old MI' },
+      right: { recall: 'Office Visits' }
     }
   }
 ]

@@ -1,4 +1,9 @@
-# NQF 002 - Final Version
+# Quality: NQF 002 using Variables
+# There are several examples of this statement in the Sandbox.
+#
+# This example uses the "vsac" node, which, in the future, will pull code sets from the VSAC and create a set of results from those codes.
+# This example uses variables to break up the statement into sub-concepts and reuse several sub-concepts through the statement.
+# The measurement period is limited to the year 2011
 measurement_period = {
   date_range: {
     start: '2011-01-01',

@@ -1,4 +1,4 @@
-# Yields a single stream of all Conditions where MI was Primary Diagnosis.
+# Intersect: Conditions where Old MI was reported in Inpatient Header
 # This involves two Condition streams and so results are intersected
 {
   intersect: [

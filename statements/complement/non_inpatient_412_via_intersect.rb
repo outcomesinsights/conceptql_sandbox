@@ -1,4 +1,4 @@
-# All Conditions where the Condition isn't an MI as the Primary Diagnosis (same as above)
+# Complement: Conditions that aren't Old MI reported in Inpatient Header
 {
   intersect: [
     { complement: { icd9: '412' } },

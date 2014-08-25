@@ -1,4 +1,7 @@
-# Yields two streams: a stream of all MI Conditions for people who are Male and a stream of all office visit Procedures for people who are Male
+# Person Filter: Office Visits and Old MI
+# Yields two streams:
+# - a stream of all MI Conditions for people who are Male
+# - a stream of all office visit Procedures for people who are Male
 {
   person_filter: {
     left: {
