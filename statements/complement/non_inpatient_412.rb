@@ -1,4 +1,4 @@
-# Complement: All Conditions where the Condition isn't an Old MI AND in an Inpatient setting
+# Complement: All Conditions that aren't Old MI reported in Inpatient Header
 {
   complement: {
     union: [

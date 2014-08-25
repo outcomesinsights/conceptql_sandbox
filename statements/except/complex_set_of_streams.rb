@@ -1,6 +1,6 @@
 # Except: Conditions, and People, and Procedures
 # Passes three streams downstream:
-#   - a stream of Conditions that are MI but not primary diagnosis
+#   - a stream of Conditions that are MI but not reported in Inpatient Header
 #   - a stream of People that are Male but not White
 #   - a stream of Procedures that are office visits (this stream is completely unaffected by the right-hand stream)
 #
