@@ -33,7 +33,7 @@
           { recall: 'Heart Attack Visit'},
           {
             complement: {
-              place_of_service_code: 23
+              place_of_service_code: 21
             }
           }
         ]
