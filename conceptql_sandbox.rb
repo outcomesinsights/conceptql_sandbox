@@ -41,6 +41,11 @@ post '/api/v0/create_example' do
   }.to_json
 end
 
+get '/api/v0/partial_results/:hash_id' do
+  example = get_example(params[:hash_id])
+  { partial_results: example.partial_results }.to_json
+end
+
 get '/api/v0/sql/:hash_id' do
   example = get_example(params[:hash_id])
   { sql: example.sql }.to_json

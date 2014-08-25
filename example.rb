@@ -16,7 +16,7 @@ class Example < Sequel::Model
   end
 
   def sql
-    ConceptQL::Query.new(data_db, parsed_statement).sql
+    query.sql
   rescue LoadError
     "Statement includes experimental nodes.  Cannot generate SQL statement."
   end
@@ -36,9 +36,17 @@ class Example < Sequel::Model
     @yaml_statement ||= parsed_statement.to_yaml
   end
 
+  def partial_results
+    @partial_results ||= query.query.from_self.limit(10).all
+  end
+
   private
   def data_db
     @data_db ||= Sequel.connect(Psych.load_file('config/database.yml')['data'])
+  end
+
+  def query
+    @query ||= ConceptQL::Query.new(data_db, parsed_statement)
   end
 
   def graph_it(statement, file)
