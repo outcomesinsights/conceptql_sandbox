@@ -11,6 +11,7 @@ app.controller('MyCtrl', function($scope, $http) {
     if (hashId && hashId != "") {
       loadSQL(hashId);
       loadYAML(hashId);
+      loadPartialResults(hashId);
       loadDiagram(hashId);
       $scope.exampleUrl = $scope.urlify(hashId)
     }
@@ -21,6 +22,7 @@ app.controller('MyCtrl', function($scope, $http) {
     $scope.yaml = null;
     $scope.query = null;
     $scope.img_src = null;
+    $scope.partial_results = null;
     $scope.title = null;
     $scope.description = null;
     $scope.statement = null;
@@ -57,6 +59,17 @@ app.controller('MyCtrl', function($scope, $http) {
     $scope.yaml = null;
     $http.get('/api/v0/yaml/' + hashId).success(function(data) {
       $scope.yaml = data.yaml;
+    });
+  };
+
+  var loadPartialResults = function(hashId) {
+    $scope.partial_results = null;
+    $http.get('/api/v0/partial_results/' + hashId).success(function(data) {
+      var pr = data.partial_results;
+      $scope.partial_results = pr;
+      if (pr[0]) {
+        $scope.partial_results_keys = Object.keys(pr[0]);
+      }
     });
   };
 

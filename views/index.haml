@@ -76,3 +76,20 @@
             .panel-body
               %p.info{ 'ng-show' => 'copied' } NOTE: If you plan to use this query against your PostgreSQL OMOP-CDM data, please make sure you've set your search_path variable properly.
               %textarea{ 'ng-model' => 'query', 'ng-copy' => 'copied=true', :rows => 25, :cols => 70 }
+          .clearfix
+          .panel.panel-default.pull-left{ 'ng-show' => 'partial_results != undefined && partial_results != null && !partial_results[0]' }
+            .panel-heading
+              %h4 No results returned
+          .panel.panel-default.pull-left{ 'ng-show' => 'partial_results != undefined && partial_results != null && partial_results[0]' }
+            .panel-heading
+              %h4 First {{ partial_results.length }} Results
+            .panel-body
+              %table.table
+                %thead
+                  %tr
+                    %th{ 'ng-repeat' => 'key in partial_results_keys' }
+                      {{ key }}
+                %tbody
+                  %tr{ 'ng-repeat' => 'result in partial_results' }
+                    %td{ 'ng-repeat' => 'key in partial_results_keys' }
+                      {{ result[key] }}
