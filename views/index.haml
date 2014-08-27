@@ -17,12 +17,16 @@
         .panel-heading
           %h1 ConceptQL Sandbox
         .panel-body
-          %p This webpage allows you to tinker with the <a href="http://github.com/outcomesinsights/conceptql">ConceptQL</a> language.  The language itself is described in <a href="https://github.com/outcomesinsights/conceptql/blob/master/doc/ConceptQL%20Specification%20(alpha).pdf?raw=true">this PDF</a>.
-          %p You may choose some example statments from the "Example Statements" dropdown.  These examples demonstrate some of the features of ConceptQL.
-          %p To enter in your ConceptQL example, you may modify an existing example, or enter in your own example in JSON format and click "Create Example".  The statement is submitted to a web service that will translate the statement into OMOP-CDM compatible SQL designed to run against a PostgreSQL database created through the <a href="http://github.com/outcomesinsights/loadmop">loadmop</a> tool.  It will also display a diagram of the statement along with the first 10 results returned by the query.
-          %p The diagram includes a count of all the results that match your statement (labeled "rows"), along with a count of the unique patients in those results (labeled "n").  This processing can take a bit of time on our server, and your diagram may take a few moments to appear.  Once a diagram is generated, it is cached so it will appear faster the next time you access it.
-          %p For our demonstration, the counts and results returned are from a sample synthetic Medicare claims data consisting of 100,000+ patients.  The results derived from these synthetic data should not be used for actual research purposes.
-          %p Some features of the language are experimental and are not yet part of the SQL generator.  You might see a diagram, but no SQL if you run a statement that contains these experimental features.  Counts won't appear on diagrams that are experimental.
+          %p This webpage demonstrates some of the features of the <a href="http://github.com/outcomesinsights/conceptql">ConceptQL</a> language.  The language itself is described in <a href="https://github.com/outcomesinsights/conceptql/blob/master/doc/ConceptQL%20Specification%20(alpha).pdf?raw=true">this PDF</a>.
+          %p To explore the language, simply choose an example from the drop down menu.
+          %p Each example will be submitted to a web service that translates ConceptQL statements into:
+          %ul
+            %li A diagram, complete with the number of results returned by each part of the statement (labeled "rows") and the number of unique patients returned (labeled "n")
+            %li A YAML representation of the statement, to demonstrate that ConceptQL can be represented in any object notation that supports hashes and arrays
+            %li A SQL statement that can be run on any PostgreSQL database loaded with <a href="http://omop.org/CDM">OMOP CDMv4</a> structured data and the OMOP vocabulary tables
+            %li The first 10 results returned by the ConceptQL statement
+          %p The web service uses a sample of synthetic Medicare claims data consisting of 100,000+ patients to generate results and counts for the diagrams.  The results derived from these synthetic data should not be used for actual research purposes.
+          %p Some features of the language are experimental and are not yet part of the SQL generator.  As a result, some statements will not return SQL statements, diagrams with counts, or the first 10 results.
 
     .row
       .panel.panel-default.col-md-12
