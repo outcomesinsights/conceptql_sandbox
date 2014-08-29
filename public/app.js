@@ -1,6 +1,6 @@
 var app = angular.module('myApp', []);
 
-app.controller('MyCtrl', function($scope, $http) {
+app.controller('MyCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
   var loadExample = function(data) {
     $scope.title = data.title;
     $scope.description = data.description;
@@ -9,16 +9,16 @@ app.controller('MyCtrl', function($scope, $http) {
     }
     var hashId = data.hash_id;
     if (hashId && hashId != "") {
-      loadSQL(hashId);
+      loadSQL(hashId, $scope.dialect);
       loadYAML(hashId);
-      loadPartialResults(hashId);
-      loadDiagram(hashId);
-      $scope.exampleUrl = $scope.urlify(hashId)
+      loadPartialResults(hashId, $scope.dialect);
+      loadDiagram(hashId, $scope.dialect);
+      $scope.urlify(hashId, $scope.dialect)
     }
-
   };
 
   $scope.clear = function() {
+    $scope.dialect = 'postgres';
     $scope.yaml = null;
     $scope.query = null;
     $scope.img_src = null;
@@ -30,21 +30,26 @@ app.controller('MyCtrl', function($scope, $http) {
   }
 
   $scope.fetchExample = function() {
-    $scope.clear();
-    createOrFetchExample({hash_id: $scope.exampleHashId})
+    if ($scope.dialect && $scope.exampleHashId) {
+      createOrFetchExample({hash_id: $scope.exampleHashId})
+    }
   };
 
   $scope.$watch('exampleHashId', function() {
     $scope.fetchExample();
   });
 
-  var loadSQL = function(hashId) {
+  $scope.$watch('dialect', function() {
+    $scope.fetchExample();
+  });
+
+  var loadSQL = function(hashId, dialect) {
     $scope.query = null;
     var displayIt = function(formatted_data) {
       $scope.query = formatted_data.result;
     };
 
-    $http.get('/api/v0/sql/' + hashId).success(function(data) {
+    $http.get('/api/v0/sql/' + hashId, { params: { dialect: dialect }}).success(function(data) {
       $http( { url: 'http://sqlformat.org/api/v1/format',
             method: 'POST',
             responseType: 'JSON',
@@ -62,9 +67,9 @@ app.controller('MyCtrl', function($scope, $http) {
     });
   };
 
-  var loadPartialResults = function(hashId) {
+  var loadPartialResults = function(hashId, dialect) {
     $scope.partial_results = null;
-    $http.get('/api/v0/partial_results/' + hashId).success(function(data) {
+    $http.get('/api/v0/partial_results/' + hashId, { params: { dialect: dialect }}).success(function(data) {
       var pr = data.partial_results;
       $scope.partial_results = pr;
       if (pr[0]) {
@@ -73,17 +78,16 @@ app.controller('MyCtrl', function($scope, $http) {
     });
   };
 
-  var loadDiagram = function(hashId) {
+  var loadDiagram = function(hashId, dialect) {
     $scope.img_src = null;
     // Set the timeout for 10 minutes
-    $http.get('/api/v0/diagram/' + hashId, { timeout: 600000 }).success(function(data) {
+    $http.get('/api/v0/diagram/' + hashId, { params: { dialect: dialect}, timeout: 600000 }).success(function(data) {
       $scope.img_src = data.img_src;
     });
   };
 
   var createOrFetchExample = function(attributes) {
-    $http.post('/api/v0/create_example', attributes)
-      .success(function(data) {
+    $http.post('/api/v0/create_example', attributes).success(function(data) {
         loadExample(data);
       });
   };
@@ -100,26 +104,20 @@ app.controller('MyCtrl', function($scope, $http) {
   };
 
   preloadSomeExample = function() {
-    // Grabbed the idea for parsing a URL from:
-    // http://jsfiddle.net/PT5BG/4/
-    var parser, hashy;
-    parser = document.createElement('a');
-    parser.href = window.location;
-
-    var hashy;
-    if (hashy = parser.hash) {
-      $scope.exampleHashId = hashy.substr(1);
+    var hashy, dialect;
+    if (hashy = $location.hash()) {
+      $scope.exampleHashId = hashy;
+    }
+    if (dialect = $location.search().dialect) {
+      $scope.dialect = dialect;
+    } else {
+      $scope.dialect = 'postgres';
     }
   };
 
-  $scope.urlify = function(hashId) {
-    var parser;
-    parser = document.createElement('a');
-    parser.href = window.location;
-    parser.path = '/';
-    parser.hash = '#' + hashId;
-    return parser.href;
+  $scope.urlify = function(hashId, dialect) {
+    $location.path('/').search({ dialect: dialect }).hash(hashId)
   }
 
   preloadSomeExample();
-});
+}]);

@@ -33,12 +33,20 @@
         .panel-heading
           %h4 ConceptQL Statement
         .panel-body
+          %label{ :for => 'dialect' } RDBMS Dialect for Examples
+          %br
+          %select.examples{ :name => 'dialect', 'ng-change' => 'loadExample()', 'ng-model' => 'dialect' }
+            %option{ :value => 'postgres' } PostgreSQL
+            %option{ :value => 'oracle' } Oracle
+          %br
+
           %label{ :for => 'examples' } Example Statements
           %br
           %select.examples{ :name => 'examples', 'ng-change' => 'loadExample()', 'ng-model' => 'exampleHashId' }
             %option{ :value => '' }
             - @examples.each do |example|
               %option{ :value => example.hash_id }= example.title
+
           %form
             %label{ :for => 'title' } Title of Example
             %br
