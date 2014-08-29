@@ -1,10 +1,16 @@
 ---
 # 'data' points to the PostgreSQL database where the data actually lives
-data:
+postgres:
   adapter: postgres
   database: conceptql_test
   host: 172.28.128.3
-  schema: vocabulary,_validation1,public
+  search_path: vocabulary,_validation1,public
+  username: vagrant
+  password: v
+oracle:
+  adapter: oracle
+  database: conceptql_test
+  host: 172.28.128.3
   username: vagrant
   password: v
 # 'site_data' points to where the examples live
