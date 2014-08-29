@@ -105,8 +105,8 @@ app.controller('MyCtrl', ['$scope', '$http', '$location', function($scope, $http
 
   preloadSomeExample = function() {
     var hashy, dialect;
-    if (hashy = $location.hash()) {
-      $scope.exampleHashId = hashy;
+    if (hashy = $location.path()) {
+      $scope.exampleHashId = hashy.substr(1,99);
     }
     if (dialect = $location.search().dialect) {
       $scope.dialect = dialect;
@@ -116,7 +116,7 @@ app.controller('MyCtrl', ['$scope', '$http', '$location', function($scope, $http
   };
 
   $scope.urlify = function(hashId, dialect) {
-    $location.path('/').search({ dialect: dialect }).hash(hashId)
+    $location.path(hashId).search({ dialect: dialect })
   }
 
   preloadSomeExample();
