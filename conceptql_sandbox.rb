@@ -43,17 +43,17 @@ end
 
 get '/api/v0/partial_results/:hash_id' do
   example = get_example(params[:hash_id])
-  { partial_results: example.partial_results }.to_json
+  { partial_results: example.partial_results(params[:dialect]) }.to_json
 end
 
 get '/api/v0/sql/:hash_id' do
   example = get_example(params[:hash_id])
-  { sql: example.sql }.to_json
+  { sql: example.sql(params[:dialect]) }.to_json
 end
 
 get '/api/v0/diagram/:hash_id' do
   example = get_example(params[:hash_id])
-  { img_src: example.image_path }.to_json
+  { img_src: example.image_path(params[:dialect]) }.to_json
 end
 
 get '/api/v0/yaml/:hash_id' do
