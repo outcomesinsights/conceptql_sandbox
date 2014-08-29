@@ -1,6 +1,24 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.0.4 - 2014-08-27
+
+### Added
+- Support for ConceptQL 0.0.7.
+    - Support for Oracle!
+- Ability to choose PostgreSQL or Oracle dialects for output.
+- URL at top is updated with URL for the current example.
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Example URL field.
+
+### Fixed
+- Nothing.
+
+
 ## 0.0.3 - 2014-08-23
 
 ### Added
