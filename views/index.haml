@@ -23,7 +23,7 @@
           %ul
             %li A diagram, complete with the number of results returned by each part of the statement (labeled "rows") and the number of unique patients returned (labeled "n")
             %li A YAML representation of the statement, to demonstrate that ConceptQL can be represented in any object notation that supports hashes and arrays
-            %li A SQL statement that can be run on any PostgreSQL database loaded with <a href="http://omop.org/CDM">OMOP CDMv4</a> structured data and the OMOP vocabulary tables
+            %li A SQL statement that can be run on the RDBMS of your choosing, so long as it is loaded with <a href="http://omop.org/CDM">OMOP CDMv4</a> structured data and the OMOP vocabulary tables
             %li The first 10 results returned by the ConceptQL statement
           %p The web service uses a sample of synthetic Medicare claims data consisting of 100,000+ patients to generate results and counts for the diagrams.  The results derived from these synthetic data should not be used for actual research purposes.
           %p Some features of the language are experimental and are not yet part of the SQL generator.  As a result, some statements will not return SQL statements, diagrams with counts, or the first 10 results.
