@@ -1,9 +1,9 @@
 require_relative 'example'
 
-%w(postgres oracle).each do |dialect|
+%w(mssql postgres oracle).each do |dialect|
   Example.all.each do |e|
     begin
-    puts e.title
+      puts e.title
       puts dialect
       e.image_path(dialect)
       e.partial_results(dialect)
