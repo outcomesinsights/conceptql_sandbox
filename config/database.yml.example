@@ -1,5 +1,5 @@
 ---
-# 'data' points to the PostgreSQL database where the data actually lives
+# 'postgres' dialect: this is where the PostgreSQL-based CDM lives
 postgres:
   adapter: postgres
   database: conceptql_test
@@ -7,12 +7,23 @@ postgres:
   search_path: vocabulary,_validation1,public
   username: vagrant
   password: v
+# 'oracle' dialect: this is where the Oracle-based CDM lives
 oracle:
   adapter: oracle
   database: conceptql_test
   host: 172.28.128.3
   username: vagrant
   password: v
+# 'mssql' dialect: this is where the SQL Server-based CDM lives
+mssql:
+  adapter: tinytds
+  host: mssql.instance.com
+  port: 1433
+  username: vagrant
+  password: v
+  database: cdmv4
+  # I use a long timeout here because I was having issues with connections closing
+  timeout: 3000
 # 'site_data' points to where the examples live
 site_data:
   adapter: sqlite

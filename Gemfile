@@ -6,6 +6,7 @@ gem 'sinatra'
 gem 'sqlite3'
 gem 'pg'
 gem 'ruby-oci8'
+gem 'tiny_tds'
 gem 'hashids'
 
 group :development do
