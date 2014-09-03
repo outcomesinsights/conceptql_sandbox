@@ -1,6 +1,22 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.0.5 - 2014-08-27
+
+### Added
+- Support for ConceptQL 0.0.9.
+    - Support for MSSQL!
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- URL is now more email-friendly.
+
+
 ## 0.0.4 - 2014-08-27
 
 ### Added
