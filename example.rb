@@ -42,7 +42,7 @@ class Example < Sequel::Model
 
   private
   def data_db(dialect)
-    @data_db ||= Sequel.connect(database_config(dialect))
+    @data_db ||= Sequel.connect(database_config(dialect)).tap { |db| db.extension :error_sql }
   end
 
   def query(dialect)
