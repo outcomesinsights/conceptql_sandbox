@@ -1,6 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.0.6 - 2014-09-04
+
+### Added
+- Support for ConceptQL 0.1.0.
+    - Support for value columns in results!
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- Show SQL when error with precaching.
+- Mention that dialect is selectable.
+
+
 ## 0.0.5 - 2014-08-27
 
 ### Added
