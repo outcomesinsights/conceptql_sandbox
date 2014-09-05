@@ -7,8 +7,8 @@ Pathname.new('statements').children.each do |child|
     lines = file.readlines
     attribs = {
       title: lines.first.sub(/^#\s*/, ''),
-      description: lines.select { |l| l =~ /^#/ }.map { |l| l.sub(/^#\s*/, '') }[1..99].join("\n"),
-      statement: (eval(lines.select { |l| l !~ /^#/ }.join("\n"))).to_json
+      description: lines.select { |l| l =~ /^#/ }.map { |l| l.sub(/^#\s*/, '') }[1..99].join,
+      statement: (eval(lines.select { |l| l !~ /^#/ }.join)).to_json
     }
     Example.find_or_create(attribs)
   end
