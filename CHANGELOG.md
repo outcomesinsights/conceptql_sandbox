@@ -1,6 +1,21 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.0.7 - 2014-09-18
+
+### Added
+- Support for ConceptQL 0.1.1
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- Calls to Query#sql should be much faster.
+
+
 ## 0.0.5 - 2014-08-27
 
 ### Added
