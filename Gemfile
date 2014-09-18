@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'conceptql', '0.1.0'
+gem 'conceptql', '0.1.1'
 gem 'haml'
 gem 'sinatra'
 gem 'sqlite3'
