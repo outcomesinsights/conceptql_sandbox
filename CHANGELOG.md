@@ -1,6 +1,21 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.0.8 - 2014-09-18
+
+### Added
+- Caching of SQL statements.
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- Nothing.
+
+
 ## 0.0.7 - 2014-09-18
 
 ### Added
