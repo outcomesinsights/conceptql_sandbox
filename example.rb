@@ -3,6 +3,7 @@ require 'digest'
 require 'psych'
 require 'json'
 require 'conceptql/query'
+require 'conceptql/version'
 require 'conceptql/graph'
 require 'conceptql/fake_grapher'
 require_relative 'hashable'
@@ -16,9 +17,13 @@ class Example < Sequel::Model
   end
 
   def sql(dialect)
-    query(dialect).sql
-  rescue LoadError
-    "Statement includes experimental nodes.  Cannot generate SQL statement."
+    @sql ||= cached_to_file(dialect, 'sql') do
+      begin
+        query(dialect).sql
+      rescue LoadError
+        "Statement includes experimental nodes.  Cannot generate SQL statement."
+      end
+    end
   end
 
   def image_path(dialect)
@@ -37,7 +42,13 @@ class Example < Sequel::Model
   end
 
   def partial_results(dialect)
-    @partial_results ||= read_or_create_results_file(dialect)
+    @partial_results ||= cached_to_file(dialect, 'json') do
+      begin
+        query(dialect).query.from_self.limit(10).all
+      rescue LoadError
+        [ { error: 'Query contains experimental nodes.  Cannot fetch results.' } ]
+      end
+    end
   end
 
   private
@@ -60,28 +71,34 @@ class Example < Sequel::Model
   end
 
   def file_hash(dialect)
-    @file_hash ||= Digest::SHA256.hexdigest([ statement, sql(dialect), database_config(dialect) ].join)
+    @file_hash ||= Digest::SHA256.hexdigest([ statement, ConceptQL::VERSION, dialect, database_config(dialect) ].join)
   end
 
   def database_config(dialect)
     @database_config ||= Psych.load_file('config/database.yml')[dialect]
   end
 
-  def read_or_create_results_file(dialect)
+  def cached_to_file(dialect, extension)
+    file = file_path(dialect, extension)
+    if file.exist?
+      content = file.read
+      content = JSON.parse(content) if extension == 'json'
+      return content
+    end
+    results = yield
+    if extension == 'json'
+      File.write(file, results.to_json)
+    else
+      File.write(file, results)
+    end
+    results
+  end
+
+  def file_path(dialect, extension)
     results_dir = Pathname.new('results')
     results_dir.mkdir unless results_dir.exist?
 
-    file_name = file_hash(dialect) + '.json'
-    results_file = results_dir + file_name
-
-    return JSON.parse(results_file.read) if results_file.exist?
-
-    results = begin
-      query(dialect).query.from_self.limit(10).all
-    rescue LoadError
-      [ { error: 'Query contains experimental nodes.  Cannot fetch results.' } ]
-    end
-    File.write(results_file, results.to_json)
-    results
+    file_name = file_hash(dialect) + ".#{extension}"
+    results_dir + file_name
   end
 end
