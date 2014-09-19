@@ -3,10 +3,14 @@ require_relative 'example'
 %w(postgres mssql oracle).map do |dialect|
   Example.all.each do |e|
     begin
-      puts "[#{dialect}] - #{e.title.chomp}"
+      start = Time.now
+      print "[#{dialect}] - #{e.title.chomp}"
       e.image_path(dialect)
       e.partial_results(dialect)
-    rescue
+      e.sql(dialect)
+      elapsed = Time.now - start
+      puts " - #{elapsed}"
+    rescue Sequel::DatabaseError
       require 'pp'
       pp e.parsed_statement
       pp $!.message
