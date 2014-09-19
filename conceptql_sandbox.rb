@@ -60,3 +60,10 @@ get '/api/v0/yaml/:hash_id' do
   example = get_example(params[:hash_id])
   { yaml: example.yaml_statement }.to_json
 end
+
+get '/examples.?:format?' do
+  @examples = Example.all
+  if params[:format]
+    { examples: @examples.each { |e| e.id = e.hash_id } }.to_json
+  end
+end

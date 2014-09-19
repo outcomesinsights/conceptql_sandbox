@@ -102,3 +102,4 @@ class Example < Sequel::Model
     results_dir + file_name
   end
 end
+Example.plugin :json_serializer
