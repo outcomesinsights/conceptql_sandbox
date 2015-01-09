@@ -23,7 +23,7 @@
     right: {
       time_window: [
          { icd9_procedure: [ '39.95', '54.98' ] },
-         { start: '0', end: '60d' }
+         { start: '-60d', end: '0' }
       ]
     }
   }
