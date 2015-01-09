@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Changed
+- Wording around JSON text area
+
+## Fixed
+- Acute Kidney Disease HOI
+
 ## 0.0.8 - 2014-09-18
 
 ### Added
