@@ -53,10 +53,10 @@
   define: [
     'Exclusion Criteria',
     {
-      union: {
-        recall: 'Percutaneous Coronary Intervention',
-        recall: 'Coronary Artery Bypass Grafting'
-      }
+      union: [
+        { recall: 'Percutaneous Coronary Intervention' },
+        { recall: 'Coronary Artery Bypass Grafting' }
+      ]
     }
   ]
 },
