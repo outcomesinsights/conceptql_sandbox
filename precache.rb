@@ -6,6 +6,7 @@ require_relative 'example'
       start = Time.now
       print "[#{dialect}] - #{e.title.chomp}"
       e.image_path(dialect)
+      e.pdf_path(dialect)
       e.partial_results(dialect)
       e.sql(dialect)
       elapsed = Time.now - start

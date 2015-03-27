@@ -33,6 +33,13 @@ class Example < Sequel::Model
     file.basename.to_s
   end
 
+  def pdf_path(dialect)
+    output_file = Pathname.new('public') + file_hash(dialect)
+    file = Pathname.new(output_file.to_s + '.pdf')
+    graph_it(dialect, parsed_statement, output_file.to_s, 'pdf') unless file.exist?
+    file.basename.to_s
+  end
+
   def parsed_statement
     @parsed_statement ||= JSON.parse(statement)
   end
@@ -60,10 +67,10 @@ class Example < Sequel::Model
     @query ||= ConceptQL::Query.new(data_db(dialect), parsed_statement)
   end
 
-  def graph_it(dialect, statement, file)
+  def graph_it(dialect, statement, file, suffix = 'png')
     ConceptQL::Graph.new(statement,
                          dangler: true,
-                         suffix: 'png',
+                         suffix: suffix,
                          db: data_db(dialect)
                         ).graph_it(file)
   rescue LoadError
